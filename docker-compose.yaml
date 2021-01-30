@@ -1,0 +1,28 @@
+version: "3"
+services:
+  database:
+    image: postgres
+    container_name: database
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: shiftingsands
+      POSTGRES_DB: shiftingsands-db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_db_volume:/var/lib/postgresql/data
+  backend:
+    image: vicsera/shiftingsands:backend
+    container_name: backend
+    environment:
+      DB_HOST: database
+    ports:
+      - 8080:8080
+    depends_on:
+      - local-database
+volumes:
+  postgres_db_volume:
+    name: postgres_db_volume
+networks:
+  default:
+    name: shifting_sands_network
